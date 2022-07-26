@@ -1,12 +1,34 @@
 package com.tdd.di;
 
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ContainerTest {
 
     @Nested
     public class ComponentConstruction{
+
+        interface Component{
+
+        }
+
         //TODO: instance
+        @Test
+        void 1() {
+
+            Context context = new Context();
+
+            Component instance = new Component();
+
+            context.bind(Compont.class, instance);
+
+            assertSame(instance, context.get(Component.class));
+
+        }
+
+
         //TODO: abstract class
         //TODO: interface
 
