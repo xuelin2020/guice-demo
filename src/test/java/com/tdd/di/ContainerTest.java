@@ -16,13 +16,15 @@ public class ContainerTest {
 
         //TODO: instance
         @Test
-        void 1() {
+        void should_bind_type_to_a_specific_instance() {
 
             Context context = new Context();
 
-            Component instance = new Component();
+            Component instance = new Component() {
 
-            context.bind(Compont.class, instance);
+            };
+
+            context.bind(Component.class, instance);
 
             assertSame(instance, context.get(Component.class));
 
