@@ -3,7 +3,7 @@ package com.tdd.di;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ContainerTest {
 
@@ -11,6 +11,10 @@ public class ContainerTest {
     public class ComponentConstruction{
 
         interface Component{
+
+        }
+
+        static class ComponentWithDefaultConstructor implements Component{
 
         }
 
@@ -36,6 +40,17 @@ public class ContainerTest {
 
         @Nested
         public class ConstructorInjection{
+            @Test
+            void should_bind_type_to_a_class_with_default_constructor() {
+                Context context = new Context();
+                context.bind(Component.class, ComponentWithDefaultConstructor.class);
+
+                Component instance = context.get(Component.class);
+
+                assertNotNull(instance);
+                assertTrue(instance instanceof  ComponentWithDefaultConstructor);
+            }
+
             //TODO: No args constructor
             //TODO: with dependencies
             //TODO: A -> B -> C

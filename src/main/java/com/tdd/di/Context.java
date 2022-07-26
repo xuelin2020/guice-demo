@@ -15,4 +15,8 @@ public class Context {
     public <ComponentType> ComponentType get(Class<ComponentType> type) {
         return (ComponentType) components.get(type);
     }
+
+    public <ComponentType, ComponentImplementation extends ComponentType> void bind
+            (Class<ComponentType> type, Class<ComponentImplementation> implementation) {
+    }
 }
