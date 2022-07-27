@@ -15,7 +15,8 @@ public class ContainerTest {
         }
 
         static class ComponentWithDefaultConstructor implements Component{
-
+            public ComponentWithDefaultConstructor() {
+            }
         }
 
         //TODO: instance
@@ -40,6 +41,7 @@ public class ContainerTest {
 
         @Nested
         public class ConstructorInjection{
+            //TODO: No args constructor
             @Test
             void should_bind_type_to_a_class_with_default_constructor() {
                 Context context = new Context();
@@ -51,7 +53,6 @@ public class ContainerTest {
                 assertTrue(instance instanceof  ComponentWithDefaultConstructor);
             }
 
-            //TODO: No args constructor
             //TODO: with dependencies
             //TODO: A -> B -> C
         }
