@@ -45,12 +45,13 @@ public class ContainerTest {
             @Test
             void should_bind_type_to_a_class_with_default_constructor() {
                 Context context = new Context();
+
                 context.bind(Component.class, ComponentWithDefaultConstructor.class);
 
                 Component instance = context.get(Component.class);
 
                 assertNotNull(instance);
-                assertTrue(instance instanceof  ComponentWithDefaultConstructor);
+                assertTrue(instance instanceof ComponentWithDefaultConstructor);
             }
 
             //TODO: with dependencies
