@@ -35,7 +35,7 @@ public class ContainerTest {
 
         @Nested
         public class ConstructorInjection{
-            //TODO: No args constructor
+
             @Test
             void should_bind_type_to_a_class_with_default_constructor() {
 
@@ -45,8 +45,6 @@ public class ContainerTest {
                 assertNotNull(instance);
                 assertTrue(instance instanceof ComponentWithDefaultConstructor);
             }
-
-            //TODO: with dependencies
 
             @Test
             void should_bind_type_to_a_class_with_inject_constructor() {
