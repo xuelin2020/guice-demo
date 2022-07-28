@@ -15,7 +15,13 @@ public class Context {
 
     public <ComponentType, ComponentImplementation extends ComponentType>
     void bind(Class<ComponentType> type, Class<ComponentImplementation> implementation) {
-        componentImplementations.put(type, implementation);
+        providers.put(type, (Provider<ComponentType>) () -> {
+            try {
+                return (ComponentType) ((Class<?>) implementation).getConstructor().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public <ComponentType> ComponentType get(Class<ComponentType> type) {
@@ -23,6 +29,10 @@ public class Context {
             return (ComponentType) providers.get(type).get();
 
         Class<?> implemetation = componentImplementations.get(type);
+        return getComponentType(implemetation);
+    }
+
+    private <ComponentType> ComponentType getComponentType(Class<?> implemetation) {
         try {
             return (ComponentType) implemetation.getConstructor().newInstance();
         } catch (Exception e) {
