@@ -61,8 +61,23 @@ public class ContainerTest {
                 assertSame(dependency, ((ComponentWithInjectConstructor) instance).getDependency());
             }
 
-
             //TODO: A -> B -> C
+            @Test
+            void should_bind_type_to_a_class_with_transitive_dependencies() {
+                context.bind(Component.class, ComponentWithInjectConstructor.class);
+                context.bind(Dependency.class, DependencyWithInjectConstructor.class);
+                context.bind(String.class, "indirect dependency");
+
+                Component instance = context.get(Component.class);
+
+                assertNotNull(instance);
+
+                Dependency dependency = ((ComponentWithInjectConstructor) instance).getDependency();
+                assertNotNull(dependency);
+
+                assertEquals("indirect dependency", ((DependencyWithInjectConstructor) dependency).getDependency());
+            }
+
         }
 
         @Nested
@@ -114,6 +129,19 @@ class ComponentWithInjectConstructor implements Component{
     }
 
     public Dependency getDependency() {
+        return dependency;
+    }
+}
+
+class DependencyWithInjectConstructor implements Dependency{
+    String dependency;
+
+    @Inject
+    public DependencyWithInjectConstructor(String dependency) {
+        this.dependency = dependency;
+    }
+
+    public String getDependency() {
         return dependency;
     }
 }
