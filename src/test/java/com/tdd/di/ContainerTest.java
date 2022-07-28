@@ -76,6 +76,12 @@ public class ContainerTest {
         }
 
         //TODO: multi inject constructors
+
+        @Test
+        void should_throw_exception_if_multi_inject_constructors_provided() {
+
+        }
+
         //TODO: no default constructors and inject constructor
         //TODO: dependencies not exist
 
@@ -130,6 +136,10 @@ class ComponentWithInjectConstructor implements Component{
     public Dependency getDependency() {
         return dependency;
     }
+}
+
+class ConponentWithMultiInjectConstructors implements Component{
+
 }
 
 class DependencyWithInjectConstructor implements Dependency{
