@@ -1,8 +1,11 @@
 package com.tdd.di;
 
 import javax.inject.Provider;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.util.Arrays.stream;
 
 public class Context {
 
@@ -16,7 +19,11 @@ public class Context {
     void bind(Class<Type> type, Class<Implementation> implementation) {
         providers.put(type, (Provider<Type>) () -> {
             try {
-                return (Type) ((Class<?>) implementation).getConstructor().newInstance();
+                Constructor<Implementation> injectConstructor = implementation.getConstructor();
+
+                Object[] dependencies = stream(injectConstructor.getParameters()).map(p -> get(p.getType())).toArray(Object[]::new);
+
+                return (Type) injectConstructor.newInstance(dependencies);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
