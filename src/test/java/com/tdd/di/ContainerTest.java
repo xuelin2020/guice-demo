@@ -1,5 +1,6 @@
 package com.tdd.di;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -10,20 +11,16 @@ public class ContainerTest {
     @Nested
     public class ComponentConstruction{
 
-        interface Component{
 
-        }
-
-        static class ComponentWithDefaultConstructor implements Component{
-            public ComponentWithDefaultConstructor() {
-            }
+        Context context;
+        @BeforeEach
+        void setUp() {
+            context = new Context();
         }
 
         //TODO: instance
         @Test
         void should_bind_type_to_a_specific_instance() {
-
-            Context context = new Context();
 
             Component instance = new Component() {
 
@@ -44,7 +41,6 @@ public class ContainerTest {
             //TODO: No args constructor
             @Test
             void should_bind_type_to_a_class_with_default_constructor() {
-                Context context = new Context();
 
                 context.bind(Component.class, ComponentWithDefaultConstructor.class);
 
@@ -84,3 +80,13 @@ public class ContainerTest {
     }
 
 }
+
+interface Component{
+
+}
+
+class ComponentWithDefaultConstructor implements Component{
+    public ComponentWithDefaultConstructor() {
+    }
+}
+
