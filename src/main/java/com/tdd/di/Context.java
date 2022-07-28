@@ -32,7 +32,7 @@ public class Context {
         });
     }
 
-    private <Type> Constructor<Type> getInjectConstructor(Class<Type> implementation) throws NoSuchMethodException {
+    private <Type> Constructor<Type> getInjectConstructor(Class<Type> implementation) {
 
 
         Stream<Constructor<?>> injectContructors = stream(implementation.getConstructors()).filter(
