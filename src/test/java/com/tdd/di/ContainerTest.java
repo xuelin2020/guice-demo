@@ -13,7 +13,6 @@ public class ContainerTest {
     @Nested
     public class ComponentConstruction{
 
-
         Context context;
         @BeforeEach
         void setUp() {
@@ -29,10 +28,8 @@ public class ContainerTest {
             assertSame(instance, context.get(Component.class));
         }
 
-
         //TODO: abstract class
         //TODO: interface
-
         @Nested
         public class ConstructorInjection{
 
@@ -76,8 +73,11 @@ public class ContainerTest {
 
                 assertEquals("indirect dependency", ((DependencyWithInjectConstructor) dependency).getDependency());
             }
-
         }
+
+        //TODO: multi inject constructors
+        //TODO: no default constructors and inject constructor
+        //TODO: dependencies not exist
 
         @Nested
         public class FieldInjection{
