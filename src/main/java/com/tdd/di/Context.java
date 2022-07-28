@@ -24,8 +24,6 @@ public class Context {
     }
 
     public <ComponentType> ComponentType get(Class<ComponentType> type) {
-        if (providers.containsKey(type))
-            return (ComponentType) providers.get(type).get();
         return (ComponentType) providers.get(type).get();
     }
 }
