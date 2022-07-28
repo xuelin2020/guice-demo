@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ContainerTest {
@@ -45,6 +47,23 @@ public class ContainerTest {
             }
 
             //TODO: with dependencies
+
+            @Test
+            void should_bind_type_to_a_class_with_inject_constructor() {
+
+                Dependency dependency = new Dependency(){
+
+                };
+
+                context.bind(Component.class, ComponentWithInjectConstructor.class);
+                context.bind(Dependency.class, dependency);
+
+                Component instance = context.get(Component.class);
+                assertNotNull(instance);
+                assertSame(dependency, ((ComponentWithInjectConstructor) instance).getDependency());
+            }
+
+
             //TODO: A -> B -> C
         }
 
@@ -79,8 +98,24 @@ interface Component{
 
 }
 
+interface Dependency{
+
+}
+
 class ComponentWithDefaultConstructor implements Component{
     public ComponentWithDefaultConstructor() {
     }
 }
 
+class ComponentWithInjectConstructor implements Component{
+    private Dependency dependency;
+
+    @Inject
+    public ComponentWithInjectConstructor(Dependency dependency) {
+        this.dependency = dependency;
+    }
+
+    public Dependency getDependency() {
+        return dependency;
+    }
+}
