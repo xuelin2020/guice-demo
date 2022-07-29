@@ -30,6 +30,8 @@ public class ContainerTest {
 
         //TODO: abstract class
         //TODO: interface
+        //TODO: component does not exist
+
         @Nested
         public class ConstructorInjection{
 
