@@ -88,6 +88,12 @@ public class ContainerTest {
         }
 
         //TODO: dependencies not exist
+        @Test
+        void should_throw_exception_if_dependency_not_found() {
+            context.bind(Component.class, ComponentWithInjectConstructor.class);
+
+            assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class));
+        }
 
         @Nested
         public class FieldInjection{
