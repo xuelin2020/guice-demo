@@ -77,12 +77,8 @@ public class ContainerTest {
 
         @Test
         void should_throw_exception_if_multi_inject_constructors_provided() {
-//            assertThrows(IllegalComponentException.class,
-//                    () -> context.bind(Component.class, ComponentWithMultiInjectConstructors.class));
-
-            context.bind(Component.class, ComponentWithMultiInjectConstructors.class);
-            assertThrows(IllegalComponentException.class, () -> context.get(Component.class));
-
+            assertThrows(IllegalComponentException.class,
+                    () -> context.bind(Component.class, ComponentWithMultiInjectConstructors.class));
         }
 
         @Test

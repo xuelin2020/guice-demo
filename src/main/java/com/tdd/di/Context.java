@@ -20,6 +20,7 @@ public class Context {
 
     public <Type, Implementation extends Type>
     void bind(Class<Type> type, Class<Implementation> implementation) {
+
         Constructor<Implementation> injectConstructor = getInjectConstructor(implementation);
 
         providers.put(type, (Provider<Type>) () -> {
