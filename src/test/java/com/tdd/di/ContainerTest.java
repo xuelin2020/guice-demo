@@ -87,7 +87,6 @@ public class ContainerTest {
                     () -> context.bind(Component.class, ComponentWithNoInjectConstructorNorDefaultConstructor.class));
         }
 
-        //TODO: no default constructors and inject constructor
         //TODO: dependencies not exist
 
         @Nested
