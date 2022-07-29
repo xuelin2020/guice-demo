@@ -35,11 +35,11 @@ public class Context {
     private <Type> Constructor<Type> getInjectConstructor(Class<Type> implementation) {
 
 
-        Stream<Constructor<?>> injectContructors = stream(implementation.getConstructors()).filter(
+        Stream<Constructor<?>> injectContractors = stream(implementation.getConstructors()).filter(
                 c -> c.isAnnotationPresent(Inject.class)
         );
 
-        return (Constructor<Type>) injectContructors.findFirst().orElseGet(() -> {
+        return (Constructor<Type>) injectContractors.findFirst().orElseGet(() -> {
             try {
                 return implementation.getConstructor();
             } catch (NoSuchMethodException e) {
