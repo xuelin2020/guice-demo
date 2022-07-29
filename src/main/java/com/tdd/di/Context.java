@@ -3,6 +3,7 @@ package com.tdd.di;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +29,8 @@ public class Context {
                 Object[] dependencies = stream(injectConstructor.getParameters())
                         .map(p -> get(p.getType())).toArray(Object[]::new);
                 return (Type) injectConstructor.newInstance(dependencies);
-            } catch (Exception e) {
-                throw new IllegalComponentException();
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
         });
     }
@@ -53,6 +54,7 @@ public class Context {
     }
 
     public <Type> Type get(Class<Type> type) {
+        if (!providers.containsKey(type)) throw new DependencyNotFoundException();
         return (Type) providers.get(type).get();
     }
 }
