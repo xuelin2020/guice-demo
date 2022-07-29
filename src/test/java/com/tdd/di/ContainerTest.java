@@ -155,7 +155,7 @@ class ComponentWithMultiInjectConstructors implements Component{
 }
 
 class ComponentWithNoInjectConstructorNorDefaultConstructor implements Component{
-    public ComponentWithNoInjectConstructorNorDefaultConstructor() {
+    public ComponentWithNoInjectConstructorNorDefaultConstructor(String name) {
     }
 }
 
