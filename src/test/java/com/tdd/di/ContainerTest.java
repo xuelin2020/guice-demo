@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,11 +32,10 @@ public class ContainerTest {
         //TODO: abstract class
         //TODO: interface
         //TODO: component does not exist
-
-
         @Test
-        void should_() {
-            context.get(Component.class);
+        void should_return_empty_if_component_not_defined() {
+            Optional<Component> component = context.get_(Component.class);
+            assertTrue(component.isEmpty());
         }
 
         @Nested
