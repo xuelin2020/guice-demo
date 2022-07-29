@@ -32,6 +32,12 @@ public class ContainerTest {
         //TODO: interface
         //TODO: component does not exist
 
+
+        @Test
+        void should_() {
+            context.get(Component.class);
+        }
+
         @Nested
         public class ConstructorInjection{
 
@@ -89,7 +95,6 @@ public class ContainerTest {
                     () -> context.bind(Component.class, ComponentWithNoInjectConstructorNorDefaultConstructor.class));
         }
 
-        //TODO: dependencies not exist
         @Test
         void should_throw_exception_if_dependency_not_found() {
             context.bind(Component.class, ComponentWithInjectConstructor.class);
