@@ -26,7 +26,7 @@ public class ContainerTest {
             Component instance = new Component() {
             };
             context.bind(Component.class, instance);
-            assertSame(instance, context.get(Component.class).orElseThrow(() -> new DependencyNotFoundException()));
+            assertSame(instance, context.get(Component.class).get());
         }
 
         //TODO: abstract class
@@ -95,7 +95,9 @@ public class ContainerTest {
         void should_throw_exception_if_dependency_not_found() {
             context.bind(Component.class, ComponentWithInjectConstructor.class);
 
-            assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class));
+            DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class));
+
+            assertEquals(Dependency.class, exception.getDependency());
         }
 
         @Test
