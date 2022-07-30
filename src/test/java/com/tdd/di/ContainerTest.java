@@ -40,7 +40,6 @@ public class ContainerTest {
 
         @Nested
         public class ConstructorInjection{
-
             @Test
             void should_bind_type_to_a_class_with_default_constructor() {
 
@@ -53,10 +52,7 @@ public class ContainerTest {
 
             @Test
             void should_bind_type_to_a_class_with_inject_constructor() {
-
-                Dependency dependency = new Dependency(){
-
-                };
+                Dependency dependency = new Dependency(){};
 
                 context.bind(Component.class, ComponentWithInjectConstructor.class);
                 context.bind(Dependency.class, dependency);
@@ -110,6 +106,16 @@ public class ContainerTest {
             assertThrows(CyclicDependenciesFound.class, () -> context.get(Component.class));
         }
 
+
+        @Test
+        void should_throw_exception_if_transitive_cyclic_dependencies_for_found() {
+            context.bind(Component.class, ComponentWithInjectConstructor.class);
+            context.bind(Dependency.class, DependencyDependedOnAnotherDependency.class);
+            context.bind(AnotherDependency.class, AnotherDependencyDependedOnComponent.class);
+
+            assertThrows(CyclicDependenciesFound.class, () -> context.get(Component.class));
+        }
+
         @Nested
         public class FieldInjection{
 
@@ -142,6 +148,10 @@ interface Component{
 }
 
 interface Dependency{
+
+}
+
+interface AnotherDependency{
 
 }
 
@@ -198,5 +208,23 @@ class DependencyDependedOnComponent implements Dependency {
     @Inject
     public DependencyDependedOnComponent(Component component) {
         this.component = component;
+    }
+}
+
+class AnotherDependencyDependedOnComponent implements AnotherDependency{
+    private Component component;
+
+    @Inject
+    public AnotherDependencyDependedOnComponent(Component component) {
+        this.component = component;
+    }
+}
+
+class DependencyDependedOnAnotherDependency implements Dependency{
+    private AnotherDependency anotherDependency;
+
+    @Inject
+    public DependencyDependedOnAnotherDependency(AnotherDependency anotherDependency) {
+        this.anotherDependency = anotherDependency;
     }
 }
