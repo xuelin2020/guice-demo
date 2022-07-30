@@ -37,4 +37,4 @@ class ConstructorInjectionProvider<T> implements Provider<T>{
         }
     }
 ```
-2. 
+2. 使用10个测试完成了依赖注入的核心功能。

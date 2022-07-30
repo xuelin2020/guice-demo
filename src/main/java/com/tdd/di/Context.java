@@ -22,10 +22,12 @@ public class Context {
 
     public <Type, Implementation extends Type>
     void bind(Class<Type> type, Class<Implementation> implementation) {
-
         Constructor<Implementation> injectConstructor = getInjectConstructor(implementation);
-
         providers.put(type, new ConstructorInjectionProvider(injectConstructor));
+    }
+
+    public <Type> Optional<Type> get(Class<Type> type) {
+        return Optional.ofNullable(providers.get(type)).map(provider -> (Type) provider.get());
     }
 
     class ConstructorInjectionProvider<T> implements Provider<T>{
@@ -55,8 +57,6 @@ public class Context {
     }
 
     private <Type> Constructor<Type> getInjectConstructor(Class<Type> implementation) {
-
-
         List<Constructor<?>> injectContractors = stream(implementation.getConstructors()).filter(
                 c -> c.isAnnotationPresent(Inject.class)
         ).collect(Collectors.toList());
@@ -72,7 +72,4 @@ public class Context {
         });
     }
 
-    public <Type> Optional<Type> get(Class<Type> type) {
-        return Optional.ofNullable(providers.get(type)).map(provider -> (Type) provider.get());
-    }
 }
