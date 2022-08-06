@@ -19,6 +19,7 @@ public class ContextConfig{
 
     public <Type> void bind(Class<Type> type, Type instance) {
         providers.put(type, (Provider<Type>) () -> instance);
+        componentProviders.put(type, context -> instance);
     }
 
     public <Type, Implementation extends Type>
@@ -41,7 +42,7 @@ public class ContextConfig{
         T get(Context context);
     }
 
-    class ConstructorInjectionProvider<T> implements Provider<T>{
+    class ConstructorInjectionProvider<T> implements Provider<T>, ComponentProvider<T>{
         private Class<?> componentType;
         private Constructor<T> injectConstructor;
         private boolean constructing = false;
@@ -53,11 +54,16 @@ public class ContextConfig{
 
         @Override
         public T get() {
+            return get(getContext());
+        }
+
+        @Override
+        public T get(Context context) {
             if (constructing) throw new CyclicDependenciesFound();
             try {
                 constructing = true;
                 Object[] dependencies = stream(injectConstructor.getParameters())
-                        .map(p -> getContext().get(p.getType())
+                        .map(p -> context.get(p.getType())
                                 .orElseThrow(() -> new DependencyNotFoundException(componentType, p.getType())))
                         .toArray(Object[]::new);
                 return injectConstructor.newInstance(dependencies);
