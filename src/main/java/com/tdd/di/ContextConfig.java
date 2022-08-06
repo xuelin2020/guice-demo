@@ -14,15 +14,18 @@ import static java.util.Arrays.stream;
 public class ContextConfig{
 
     private Map<Class<?>, ComponentProvider<?>> provider = new HashMap<>();
+    private Map<Class<?>, List<Class<?>>> dependencies = new HashMap<>();
 
     public <Type> void bind(Class<Type> type, Type instance) {
         provider.put(type, context -> instance);
+        dependencies.put(type, List.of());
     }
 
     public <Type, Implementation extends Type>
     void bind(Class<Type> type, Class<Implementation> implementation) {
         Constructor<Implementation> injectConstructor = getInjectConstructor(implementation);
         provider.put(type, new ConstructorInjectionProvider(type, injectConstructor));
+        dependencies.put(type, stream(injectConstructor.getParameters()).map(parameter -> parameter.getType()).collect(Collectors.toList()));
     }
 
     public Context getContext(){
