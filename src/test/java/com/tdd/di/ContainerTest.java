@@ -26,7 +26,7 @@ public class ContainerTest {
             Component instance = new Component() {
             };
             contextConfig.bind(Component.class, instance);
-            assertSame(instance, contextConfig.get(Component.class).get());
+            assertSame(instance, contextConfig.getContext().get(Component.class).get());
         }
 
         //TODO: abstract class
@@ -40,7 +40,7 @@ public class ContainerTest {
 
         @Test
         void should_return_empty_if_component_not_defined() {
-            Optional<Component> component = contextConfig.get(Component.class);
+            Optional<Component> component = contextConfig.getContext().get(Component.class);
             assertTrue(component.isEmpty());
         }
 
@@ -50,7 +50,7 @@ public class ContainerTest {
             void should_bind_type_to_a_class_with_default_constructor() {
 
                 contextConfig.bind(Component.class, ComponentWithDefaultConstructor.class);
-                Component instance = contextConfig.get(Component.class).get();
+                Component instance = contextConfig.getContext().get(Component.class).get();
 
                 assertNotNull(instance);
                 assertTrue(instance instanceof ComponentWithDefaultConstructor);
@@ -63,7 +63,7 @@ public class ContainerTest {
                 contextConfig.bind(Component.class, ComponentWithInjectConstructor.class);
                 contextConfig.bind(Dependency.class, dependency);
 
-                Component instance = contextConfig.get(Component.class).get();
+                Component instance = contextConfig.getContext().get(Component.class).get();
                 assertNotNull(instance);
                 assertSame(dependency, ((ComponentWithInjectConstructor) instance).getDependency());
             }
@@ -74,7 +74,7 @@ public class ContainerTest {
                 contextConfig.bind(Dependency.class, DependencyWithInjectConstructor.class);
                 contextConfig.bind(String.class, "indirect dependency");
 
-                Component instance = contextConfig.get(Component.class).get();
+                Component instance = contextConfig.getContext().get(Component.class).get();
 
                 assertNotNull(instance);
 
@@ -101,7 +101,7 @@ public class ContainerTest {
         void should_throw_exception_if_dependency_not_found() {
             contextConfig.bind(Component.class, ComponentWithInjectConstructor.class);
 
-            DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> contextConfig.get(Component.class));
+            DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> contextConfig.getContext().get(Component.class));
 
             assertEquals(Dependency.class, exception.getDependency());
             assertEquals(Component.class, exception.getComponent());
@@ -113,7 +113,7 @@ public class ContainerTest {
             contextConfig.bind(Component.class, ComponentWithInjectConstructor.class);
             contextConfig.bind(Dependency.class, DependencyWithInjectConstructor.class);
 
-            DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> contextConfig.get(Component.class));
+            DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> contextConfig.getContext().get(Component.class));
             assertEquals(String.class, exception.getDependency());
             assertEquals(Dependency.class, exception.getComponent());
         }
@@ -123,7 +123,7 @@ public class ContainerTest {
             contextConfig.bind(Component.class, ComponentWithInjectConstructor.class);
             contextConfig.bind(Dependency.class, DependencyDependedOnComponent.class);
 
-            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.get(Component.class));
+            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext().get(Component.class));
         }
 
 
@@ -133,7 +133,7 @@ public class ContainerTest {
             contextConfig.bind(Dependency.class, DependencyDependedOnAnotherDependency.class);
             contextConfig.bind(AnotherDependency.class, AnotherDependencyDependedOnComponent.class);
 
-            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.get(Component.class));
+            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext().get(Component.class));
         }
 
         @Nested
