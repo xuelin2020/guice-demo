@@ -14,16 +14,16 @@ import static java.util.Arrays.stream;
 
 public class ContextConfig{
 
-    private Map<Class<?>, ComponentProvider<?>> componentProviders = new HashMap<>();
+    private Map<Class<?>, ComponentProvider<?>> provider = new HashMap<>();
 
     public <Type> void bind(Class<Type> type, Type instance) {
-        componentProviders.put(type, context -> instance);
+        provider.put(type, context -> instance);
     }
 
     public <Type, Implementation extends Type>
     void bind(Class<Type> type, Class<Implementation> implementation) {
         Constructor<Implementation> injectConstructor = getInjectConstructor(implementation);
-        componentProviders.put(type, new ConstructorInjectionProvider(type, injectConstructor));
+        provider.put(type, new ConstructorInjectionProvider(type, injectConstructor));
     }
 
     public Context getContext(){
@@ -31,7 +31,7 @@ public class ContextConfig{
         return new Context() {
             @Override
             public <Type> Optional<Type> get(Class<Type> type) {
-                return Optional.ofNullable(componentProviders.get(type)).map(provider -> (Type) provider.get(this));
+                return Optional.ofNullable(provider.get(type)).map(provider -> (Type) provider.get(this));
             }
         };
     }
