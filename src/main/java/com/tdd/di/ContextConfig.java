@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 
-public class ContextConfig {
+public class ContextConfig implements Context {
 
     private Map<Class<?>, Provider<?>> providers = new HashMap<>();
 
@@ -26,6 +26,16 @@ public class ContextConfig {
         providers.put(type, new ConstructorInjectionProvider(type, injectConstructor));
     }
 
+    public Context getContext(){
+        return new Context() {
+            @Override
+            public <Type> Optional<Type> get(Class<Type> type) {
+                return Optional.empty();
+            }
+        };
+    }
+
+    @Override
     public <Type> Optional<Type> get(Class<Type> type) {
         return Optional.ofNullable(providers.get(type)).map(provider -> (Type) provider.get());
     }
