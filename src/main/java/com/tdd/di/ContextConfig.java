@@ -36,6 +36,10 @@ public class ContextConfig{
         };
     }
 
+    interface ComponentProvider<T>{
+        T get(Context context);
+    }
+
     class ConstructorInjectionProvider<T> implements Provider<T>{
         private Class<?> componentType;
         private Constructor<T> injectConstructor;
