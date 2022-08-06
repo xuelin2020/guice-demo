@@ -33,10 +33,6 @@ public class ContainerTest {
         //TODO: interface
 
 
-        @Test
-        void should() {
-            contextConfig.bind(Component.class,ComponentWithInjectConstructor.class);
-        }
 
         @Test
         void should_return_empty_if_component_not_defined() {
