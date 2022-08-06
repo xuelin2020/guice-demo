@@ -1,7 +1,6 @@
 package com.tdd.di;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -40,7 +39,7 @@ public class ContextConfig{
         T get(Context context);
     }
 
-    class ConstructorInjectionProvider<T> implements Provider<T>, ComponentProvider<T>{
+    class ConstructorInjectionProvider<T> implements ComponentProvider<T>{
         private Class<?> componentType;
         private Constructor<T> injectConstructor;
         private boolean constructing = false;
@@ -48,11 +47,6 @@ public class ContextConfig{
         public ConstructorInjectionProvider(Class<?> componentType, Constructor<T> injectConstructor) {
             this.componentType = componentType;
             this.injectConstructor = injectConstructor;
-        }
-
-        @Override
-        public T get() {
-            return get(getContext());
         }
 
         @Override
