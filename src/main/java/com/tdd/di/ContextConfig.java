@@ -34,7 +34,7 @@ public class ContextConfig{
         return new Context() {
             @Override
             public <Type> Optional<Type> get(Class<Type> type) {
-                return Optional.ofNullable(componentProviders.get(type)).map(provider -> (Type) provider.get());
+                return Optional.ofNullable(componentProviders.get(type)).map(provider -> (Type) provider.get(this));
             }
         };
     }
