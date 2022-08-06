@@ -119,7 +119,7 @@ public class ContainerTest {
             contextConfig.bind(Component.class, ComponentWithInjectConstructor.class);
             contextConfig.bind(Dependency.class, DependencyDependedOnComponent.class);
 
-            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext().get(Component.class));
+            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext());
         }
 
 
@@ -129,7 +129,7 @@ public class ContainerTest {
             contextConfig.bind(Dependency.class, DependencyDependedOnAnotherDependency.class);
             contextConfig.bind(AnotherDependency.class, AnotherDependencyDependedOnComponent.class);
 
-            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext().get(Component.class));
+            assertThrows(CyclicDependenciesFound.class, () -> contextConfig.getContext());
         }
 
         @Nested
