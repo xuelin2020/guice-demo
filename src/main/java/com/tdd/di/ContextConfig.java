@@ -35,8 +35,7 @@ public class ContextConfig{
                 if (!dependencies.containsKey(dependency)) throw new DependencyNotFoundException(component, dependency);
             }
         }
-        
-        
+
         return new Context() {
             @Override
             public <Type> Optional<Type> get(Class<Type> type) {
