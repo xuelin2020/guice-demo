@@ -3,10 +3,7 @@ package com.tdd.di;
 import javax.inject.Inject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -34,6 +31,9 @@ public class ContextConfig{
             for (Class<?> dependency : dependencies.get(component)) {
                 if (!dependencies.containsKey(dependency)) throw new DependencyNotFoundException(component, dependency);
             }
+
+            checkDependencies(component, new Stack<>());
+
         }
 
         return new Context() {
@@ -42,6 +42,16 @@ public class ContextConfig{
                 return Optional.ofNullable(provider.get(type)).map(provider -> (Type) provider.get(this));
             }
         };
+    }
+
+    private void checkDependencies(Class<?> component, Stack<Class<?>> visiting){
+        for (Class<?> dependency : dependencies.get(component)) {
+            if (visiting.contains(dependency)) throw new CyclicDependenciesFoundException(visiting);
+            visiting.push(dependency);
+            checkDependencies(dependency,visiting);
+            visiting.pop();
+        }
+
     }
 
     interface ComponentProvider<T>{
@@ -60,7 +70,7 @@ public class ContextConfig{
 
         @Override
         public T get(Context context) {
-            if (constructing) throw new CyclicDependenciesFound();
+            if (constructing) throw new CyclicDependenciesFoundException(componentType);
             try {
                 constructing = true;
                 Object[] dependencies = stream(injectConstructor.getParameters())
